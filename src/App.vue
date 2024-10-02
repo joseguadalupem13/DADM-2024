@@ -1,42 +1,57 @@
 <script setup>
-import { ref } from 'vue';
-const header = ref('App lista de compras');
+import { ref } from 'vue'
+// Modelo
+const header = ref('App lista de compras')
+//items
+//item-model
 const items = ref([
-  {id: '0', label: '10 bolillos'},
+{id: '0', label: '10 bolillos'},
   {id: '1', label: '1 lata frijoles'},
   {id: '2', label: '1 Chela'},
   {id: '3', label: '1 Nutela'}
 ]);
+//item-Method
+const saveItem = () =>
+{
+   items.value.push({id: items.value.length + 1, label: newItem.value});
+   //clean the imput-Limpia el imput
+   newItem.value = '';
+};
 
-const newitem = ref('');
-const newItemPriority = ref('low');
+const newItem = ref('')
+const newItemHighPriority = ref(false)
 </script>
 
 <template>
   <h1>
-    <i class="material-icons shopping-cart-icon"> local_mall </i>
-      {{ header }}
+    <i class="material-icons shopping-cart-icon">local_mall</i>
+    {{ header }}
   </h1>
-  <input v-model="newItem" type="text" 
-  placeholder="Agregar Articulo"> 
 
-<label>
-  <input type="radio" value="low" v-model="newItemPriority">
-  Baja
-</label>
-<label>
-  <input type="radio" value="high" v-model="newItemPriority">
-  Alta
-</label>
-{{ newItemPriority == 'low' ? '🧊' : '🔥' }}
+  <form
+    v-on:submit.prevent="saveItem"
+  >
+    <input v-model="newItem" type="text" placeholder="Agregar un articulo" />
+    <!--Caja de seleccion de Prioridad-->
+
+    <label>
+      <input type="checkbox" v-model="newItemHighPriority" />
+      Alta Prioridad
+    </label>
+
+    <!--Boton-->
+    <button class="btn btn-primary">Salvar Articulo</button>
+  </form>
+
+  {{ newItemHighPriority }}
+  <!-- Lista -->
   <ul>
-    <li 
-      v-for="item in items" :key="id"> 🛍️ {{ item.label }}</li>
+    <li v-for="item in items" :key="item.id">🛍️ {{ item.label }}</li>
   </ul>
-  </template>
+</template>
 
 <style scoped>
-.shopping-cart-icon{
+.shopping-cart-icon {
   font-size: 2rem;
 }
 </style>
